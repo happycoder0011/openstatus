@@ -169,7 +169,7 @@ export const tinybirdRouter = createTRPCRouter({
       z.object({
         monitorId: z.string(),
         region: z.enum(monitorRegions).or(z.string()).optional(),
-        cronTimestamp: z.number().int().optional(),
+        cronTimestamp: z.int().optional(),
       }),
     )
     .query(async (opts) => {
@@ -182,7 +182,7 @@ export const tinybirdRouter = createTRPCRouter({
       z.object({
         monitorId: z.string(),
         region: z.enum(monitorRegions).or(z.string()).optional(),
-        cronTimestamp: z.number().int().optional(),
+        cronTimestamp: z.int().optional(),
         from: z.coerce.date().optional(),
         to: z.coerce.date().optional(),
       }),
@@ -223,10 +223,10 @@ export const tinybirdRouter = createTRPCRouter({
         monitorId: z.string(),
         fromDate: z.string().optional(),
         toDate: z.string().optional(),
-        interval: z.number().int().optional(), // in minutes, default 30
+        interval: z.int().optional(), // in minutes, default 30
         regions: z.enum(monitorRegions).or(z.string()).array().optional(),
-        type: z.enum(types).default("http"),
-        period: z.enum(["7d", "30d"]).default("30d"),
+        type: z.enum(types).prefault("http"),
+        period: z.enum(["7d", "30d"]).prefault("30d"),
       }),
     )
     .query(async (opts) => {
@@ -254,7 +254,7 @@ export const tinybirdRouter = createTRPCRouter({
     .input(
       z.object({
         monitorId: z.string(),
-        interval: z.number().int().default(30), // in days
+        interval: z.int().prefault(30), // in days
       }),
     )
     .query(async (opts) => {
@@ -285,9 +285,9 @@ export const tinybirdRouter = createTRPCRouter({
       z.object({
         monitorId: z.string(),
         period: z.enum(periods),
-        type: z.enum(types).default("http"),
+        type: z.enum(types).prefault("http"),
         regions: z.array(z.enum(monitorRegions).or(z.string())).optional(),
-        cronTimestamp: z.number().int().optional(),
+        cronTimestamp: z.int().optional(),
       }),
     )
     .query(async (opts) => {
@@ -320,9 +320,9 @@ export const tinybirdRouter = createTRPCRouter({
       z.object({
         monitorId: z.string(),
         period: z.enum(periods),
-        type: z.enum(types).default("http"),
+        type: z.enum(types).prefault("http"),
         region: z.enum(monitorRegions).or(z.string()).optional(),
-        cronTimestamp: z.number().int().optional(),
+        cronTimestamp: z.int().optional(),
       }),
     )
     .query(async (opts) => {
@@ -354,9 +354,9 @@ export const tinybirdRouter = createTRPCRouter({
       z.object({
         monitorId: z.string(),
         period: z.enum(periods),
-        type: z.enum(types).default("http"),
+        type: z.enum(types).prefault("http"),
         region: z.enum(monitorRegions).or(z.string()).optional(),
-        cronTimestamp: z.number().int().optional(),
+        cronTimestamp: z.int().optional(),
       }),
     )
     .query(async (opts) => {
@@ -388,11 +388,11 @@ export const tinybirdRouter = createTRPCRouter({
       z.object({
         monitorId: z.string(),
         period: z.enum(periods),
-        type: z.enum(types).default("http"),
+        type: z.enum(types).prefault("http"),
         // Additional filters
-        interval: z.number().int().optional(),
+        interval: z.int().optional(),
         regions: z.array(z.enum(monitorRegions).or(z.string())).optional(),
-        cronTimestamp: z.number().int().optional(),
+        cronTimestamp: z.int().optional(),
       }),
     )
     .query(async (opts) => {
@@ -428,9 +428,9 @@ export const tinybirdRouter = createTRPCRouter({
       z.object({
         monitorIds: z.string().array(),
         period: z.enum(["45d"]),
-        type: z.enum(types).default("http"),
+        type: z.enum(types).prefault("http"),
         region: z.enum(monitorRegions).or(z.string()).optional(),
-        cronTimestamp: z.number().int().optional(),
+        cronTimestamp: z.int().optional(),
       }),
     )
     .query(async (opts) => {
@@ -459,7 +459,7 @@ export const tinybirdRouter = createTRPCRouter({
       z.object({
         id: z.string().nullable(),
         monitorId: z.string(),
-        period: z.enum(["14d"]).default("14d"),
+        period: z.enum(["14d"]).prefault("14d"),
       }),
     )
     .query(async (opts) => {
@@ -490,7 +490,7 @@ export const tinybirdRouter = createTRPCRouter({
     .input(
       z.object({
         monitorIds: z.string().array(),
-        type: z.enum(types).default("http"),
+        type: z.enum(types).prefault("http"),
       }),
     )
     .query(async (opts) => {
@@ -520,7 +520,7 @@ export const tinybirdRouter = createTRPCRouter({
         monitorId: z.string(),
         period: z.enum(periods),
         regions: z.array(z.enum(monitorRegions).or(z.string())).optional(),
-        type: z.enum(types).default("http"),
+        type: z.enum(types).prefault("http"),
       }),
     )
     .query(async (opts) => {
@@ -540,7 +540,7 @@ export const tinybirdRouter = createTRPCRouter({
       z.object({
         monitorId: z.string(),
         period: z.enum(periods),
-        interval: z.number().int().optional(),
+        interval: z.int().optional(),
         regions: z.array(z.enum(monitorRegions).or(z.string())).optional(),
         type: z.literal("http"),
       }),
@@ -566,8 +566,8 @@ export const tinybirdRouter = createTRPCRouter({
     .input(
       z.object({
         monitorIds: z.string().array(),
-        period: z.enum(["1d"]).default("1d"),
-        type: z.enum(types).default("http"),
+        period: z.enum(["1d"]).prefault("1d"),
+        type: z.enum(types).prefault("http"),
       }),
     )
     .query(async (opts) => {
@@ -581,7 +581,7 @@ export const tinybirdRouter = createTRPCRouter({
   workspace30d: protectedProcedure
     .input(
       z.object({
-        type: z.enum(types).default("http"),
+        type: z.enum(types).prefault("http"),
       }),
     )
     .query(async (opts) => {

@@ -13,7 +13,7 @@ export async function POST(
 ) {
   const params = await props.params;
   const data = await req.json();
-  const result = z.object({ email: z.string().email() }).parse(data);
+  const result = z.object({ email: z.email() }).parse(data);
 
   const pageData = await db
     .select()

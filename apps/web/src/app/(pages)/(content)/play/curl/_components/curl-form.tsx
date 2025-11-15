@@ -31,15 +31,15 @@ import { z } from "zod";
 const methods = ["GET", "POST", "PUT", "PATCH", "DELETE"] as const;
 
 const formSchema = z.object({
-  method: z.enum(methods).default("GET"),
-  url: z.string().url().default(""),
-  body: z.string().default(""),
-  verbose: z.boolean().default(false),
-  insecure: z.boolean().default(false),
-  json: z.boolean().default(false),
+  method: z.enum(methods).prefault("GET"),
+  url: z.url().prefault(""),
+  body: z.string().prefault(""),
+  verbose: z.boolean().prefault(false),
+  insecure: z.boolean().prefault(false),
+  json: z.boolean().prefault(false),
   headers: z
     .array(z.object({ key: z.string(), value: z.string() }))
-    .default([]),
+    .prefault([]),
 });
 
 export function CurlForm({

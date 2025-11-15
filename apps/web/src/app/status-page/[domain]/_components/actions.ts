@@ -12,11 +12,7 @@ import { EmailClient } from "@openstatus/emails";
 const emailClient = new EmailClient({ apiKey: env.RESEND_API_KEY });
 
 const subscribeSchema = z.object({
-  email: z
-    .string({
-      invalid_type_error: "Invalid Email",
-    })
-    .email(),
+  email: z.email(),
   slug: z.string(),
 });
 
@@ -27,7 +23,7 @@ export async function handleSubscribe(formData: FormData) {
   });
 
   if (!validatedFields.success) {
-    const fieldErrors = validatedFields.error.flatten().fieldErrors;
+    const fieldErrors = z.treeifyError(validatedFields.error);
     return {
       error: fieldErrors?.email?.[0] || "Invalid form data",
     };
@@ -104,7 +100,7 @@ export async function handleValidatePassword(formData: FormData) {
   });
 
   if (!validatedFields.success) {
-    const fieldErrors = validatedFields.error.flatten().fieldErrors;
+    const fieldErrors = z.treeifyError(validatedFields.error);
     return {
       error: fieldErrors?.password?.[0] || "Invalid form data",
     };

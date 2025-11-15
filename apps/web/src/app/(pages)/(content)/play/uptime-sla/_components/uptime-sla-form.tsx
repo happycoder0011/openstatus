@@ -94,7 +94,7 @@ function formatDuration(seconds: number): string {
 }
 
 const formSchema = z.object({
-  uptime: z.number().min(0).max(100).default(99.99),
+  uptime: z.number().min(0).max(100).prefault(99.99),
   downtime: z.string(), // 1h 10m 30s
 });
 

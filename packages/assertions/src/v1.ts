@@ -166,53 +166,51 @@ function evaluateString(
   return { success: true };
 }
 
-export const base = z
-  .object({
-    version: z.enum(["v1"]).default("v1"),
+export const base = z.looseObject({
+    version: z.enum(["v1"]).prefault("v1"),
     type: z.string(),
-  })
-  .passthrough();
-export const statusAssertion = base.merge(
+  });
+export const statusAssertion = base.extend(
   z.object({
-    type: z.literal("status"),
-    compare: numberCompare,
-    target: z.number().int().positive(),
-  }),
+        type: z.literal("status"),
+        compare: numberCompare,
+        target: z.int().positive(),
+      }).shape
 );
 
-export const headerAssertion = base.merge(
+export const headerAssertion = base.extend(
   z.object({
-    type: z.literal("header"),
-    compare: stringCompare,
-    key: z.string(),
-    target: z.string(),
-  }),
+        type: z.literal("header"),
+        compare: stringCompare,
+        key: z.string(),
+        target: z.string(),
+      }).shape
 );
 
-export const textBodyAssertion = base.merge(
+export const textBodyAssertion = base.extend(
   z.object({
-    type: z.literal("textBody"),
-    compare: stringCompare,
-    target: z.string(),
-  }),
+        type: z.literal("textBody"),
+        compare: stringCompare,
+        target: z.string(),
+      }).shape
 );
 
-export const jsonBodyAssertion = base.merge(
+export const jsonBodyAssertion = base.extend(
   z.object({
-    type: z.literal("jsonBody"),
-    path: z.string(), // https://www.npmjs.com/package/jsonpath-plus
-    compare: stringCompare,
-    target: z.string(),
-  }),
+        type: z.literal("jsonBody"),
+        path: z.string(), // https://www.npmjs.com/package/jsonpath-plus
+        compare: stringCompare,
+        target: z.string(),
+      }).shape
 );
 
-export const recordAssertion = base.merge(
+export const recordAssertion = base.extend(
   z.object({
-    type: z.literal("dnsRecord"),
-    record: z.enum(["A", "AAAA", "CNAME", "MX", "TXT", "NS"]),
-    compare: recordCompare,
-    target: z.string(),
-  }),
+        type: z.literal("dnsRecord"),
+        record: z.enum(["A", "AAAA", "CNAME", "MX", "TXT", "NS"]),
+        compare: recordCompare,
+        target: z.string(),
+      }).shape
 );
 
 export const assertion = z.discriminatedUnion("type", [

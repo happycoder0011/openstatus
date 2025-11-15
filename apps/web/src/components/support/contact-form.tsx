@@ -53,9 +53,9 @@ export const types = [
 export const FormSchema = z.object({
   name: z.string().min(1),
   type: z.enum(["bug", "demo", "feature", "security", "question"]),
-  email: z.string().email(),
+  email: z.email(),
   message: z.string().min(1),
-  blocker: z.boolean().optional().default(false),
+  blocker: z.boolean().optional().prefault(false),
 });
 
 export type FormValues = z.infer<typeof FormSchema>;
